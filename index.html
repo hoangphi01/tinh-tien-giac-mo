@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top" id="styleNavbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="thuemini.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                <b>PHẦN MỀM TÍNH TIỀN GIẤC MƠ</b>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav me-auto">
+                    <!--
+                    <a class="nav-link active" aria-current="page" data-href="acreateRequests.php"
+                        href="acreateRequests.php">Thủ tục hành chính nội bộ</a>
+                    <a class="nav-link active" data-href="botherFeatures.php" href="botherFeatures.php">Chức năng khác</a>
+                    <a class="nav-link active" data-href="cshowLibrary.php" href="cshowLibrary.php">
+                        Thư viện
+                        
+                    </a>
+    
+                    <a class="nav-link" aria-current="page" target="_blank"
+                        href="https://docs.google.com/spreadsheets/d/1d4ism7QxgZMMeMpiXTiv04W2ZVDxjrXP3fp0LjakO8c/edit?usp=sharing">Góp
+                        ý/ Phản hồi</a>
+    
+                    <a class="nav-link disabled" aria-disabled="true">#</a>
+    
+                    <br>
+                -->
+                </div>
+    
+                <div>
+                    <div
+                        style="float: right; margin-top: 5px; margin-right: 5px;">
+                        Phiên bản: 1.0 22112024
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>Phần Mềm Tính Tiền Giấc Mơ</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+
+        <form id="expenseForm">
+            <!-- Tổng số tiền -->
+            <div class="row mb-3">
+                <label for="totalAmount" class="col-md-4 form-label"><b>Tổng số tiền đã chi:</b></label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control" id="totalAmount" required>
+                </div>
+            </div>
+            <!-- Số tiền chị Mây -->
+            <div class="row mb-3">
+                <label for="mayAmount" class="col-md-4 form-label">Tiền chị Mây:</label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control" id="mayAmount" required>
+                </div>
+            </div>
+            <!-- Số tiền anh Đức -->
+            <div class="row mb-3">
+                <label for="ducAmount" class="col-md-4 form-label">Tiền anh Đức:</label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control" id="ducAmount" required>
+                </div>
+            </div>
+            <!-- Số tiền em Phi -->
+            <div class="row mb-3">
+                <label for="phiAmount" class="col-md-4 form-label">Tiền em Phi:</label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control" id="phiAmount" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 offset-md-4">
+                    <button type="button" class="btn btn-primary w-100" onclick="calculate()">Tính Toán</button>
+                </div>
+            </div>
+        </form>
+    
+        <div id="result" class="result-section mt-4"></div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function calculate() {
+            const totalAmount = parseFloat(document.getElementById("totalAmount").value);
+            const mayAmount = parseFloat(document.getElementById("mayAmount").value);
+            const ducAmount = parseFloat(document.getElementById("ducAmount").value);
+            const phiAmount = parseFloat(document.getElementById("phiAmount").value);
+            const resultDiv = document.getElementById("result");
+
+            if (isNaN(totalAmount) || isNaN(mayAmount) || isNaN(ducAmount) || isNaN(phiAmount)) {
+                resultDiv.innerHTML = `<div class="alert alert-danger">Vui lòng nhập đầy đủ các giá trị hợp lệ!</div>`;
+                return;
+            }
+
+            const chiadeu = totalAmount / 3;
+            const doubleCheck = mayAmount + ducAmount + phiAmount;
+
+            let resultHTML = `
+                    <div class="alert alert-info">
+                        <h4>Thông Tin:</h4>
+                        <p><strong>Tổng số tiền đã chi:</strong> ${totalAmount.toLocaleString()} VND</p>
+                        <p><strong>Tổng số tiền đã chi (Double-Check):</strong> ${doubleCheck.toLocaleString()} VND</p>
+                        <p><strong>Mỗi người cần chi tiêu:</strong> ${chiadeu.toLocaleString()} VND</p>
+                        <p><strong>Chị Mây chi:</strong> ${mayAmount.toLocaleString()} VND</p>
+                        <p><strong>Anh Đức chi:</strong> ${ducAmount.toLocaleString()} VND</p>
+                        <p><strong>Em Phi chi:</strong> ${phiAmount.toLocaleString()} VND</p>
+                    </div>`;
+
+            if (mayAmount > totalAmount || ducAmount > totalAmount || phiAmount > totalAmount ||
+                mayAmount < 0 || ducAmount < 0 || phiAmount < 0) {
+                resultHTML += `
+                        <div class="alert alert-danger">
+                            <h4>Lỗi:</h4>
+                            <p>Đã xảy ra lỗi, vui lòng kiểm tra lại dữ liệu.</p>
+                        </div>`;
+            } else if (doubleCheck !== totalAmount) {
+                resultHTML += `
+                        <div class="alert alert-danger">
+                            <h4>Lỗi:</h4>
+                            <p>Tổng số tiền kiểm tra không khớp với tổng số tiền đã chi. Vui lòng kiểm tra lại!</p>
+                        </div>`;
+
+            // em Phi
+            } else if (phiAmount > chiadeu && ducAmount > 0 && ducAmount < chiadeu && mayAmount === 0) {
+                resultHTML += `
+                    <div class="alert alert-success">
+                        <h4>Kết Quả:</h4>
+                        <p>Chị Mây gửi em Phi: ${chiadeu.toLocaleString()} VND</p>
+                        <p>Anh Đức gửi em Phi: ${(chiadeu - ducAmount).toLocaleString()} VND</p>
+                    </div>`;
+            } else if (phiAmount > chiadeu && ducAmount === 0 && mayAmount < chiadeu && mayAmount > 0) {
+                resultHTML += `
+                    <div class="alert alert-success">
+                        <h4>Kết Quả:</h4>
+                        <p>Chị Mây gửi em Phi: ${(chiadeu - mayAmount).toLocaleString()} VND</p>
+                        <p>Anh Đức gửi em Phi: ${chiadeu.toLocaleString()} VND</p>
+                    </div>`;
+            } else if (phiAmount > chiadeu && ducAmount > 0 && ducAmount < chiadeu && mayAmount < chiadeu && mayAmount > 0) {
+                resultHTML += `
+                    <div class="alert alert-success">
+                        <h4>Kết Quả:</h4>
+                        <p>Chị Mây gửi em Phi: ${(chiadeu - mayAmount).toLocaleString()} VND</p>
+                        <p>Anh Đức gửi em Phi: ${(chiadeu - ducAmount).toLocaleString()} VND</p>
+                    </div>`;
+            // anh Duc
+            } else if (ducAmount > chiadeu && phiAmount > 0 && phiAmount < chiadeu && mayAmount === 0) {
+                resultHTML += `
+                    <div class="alert alert-success">
+                        <h4>Kết Quả:</h4>
+                        <p>Chị Mây gửi anh Đức: ${chiadeu.toLocaleString()} VND</p>
+                        <p>Em Phi gửi anh Đức: ${(chiadeu - phiAmount).toLocaleString()} VND</p>
+                    </div>`;
+            } else if (ducAmount > chiadeu && phiAmount === 0 && mayAmount > 0 && mayAmount < chiadeu) {
+                resultHTML += `
+                    <div class="alert alert-success">
+                        <h4>Kết Quả:</h4>
+                        <p>Chị Mây gửi anh Đức: ${(chiadeu - mayAmount).toLocaleString()} VND</p>
+                        <p>Em Phi gửi anh Đức: ${chiadeu.toLocaleString()} VND</p>
+                    </div>`;
+            } else if (ducAmount > chiadeu && phiAmount > 0 && phiAmount < chiadeu && mayAmount > 0 && mayAmount < chiadeu) {
+                resultHTML += `
+                    <div class="alert alert-success">
+                        <h4>Kết Quả:</h4>
+                        <p>Chị Mây gửi anh Đức: ${(chiadeu - mayAmount).toLocaleString()} VND</p>
+                        <p>Em Phi gửi anh Đức: ${(chiadeu - phiAmount).toLocaleString()} VND</p>
+                    </div>`;
+            // chi Mây
+            } else if (mayAmount > chiadeu && ducAmount > 0 && ducAmount < chiadeu && phiAmount === 0) {
+                resultHTML += `
+                    <div class="alert alert-success">
+                        <h4>Kết Quả:</h4>
+                        <p>Em Phi gửi chị Mây: ${chiadeu.toLocaleString()} VND</p>
+                        <p>Anh Đức gửi chị Mây: ${(chiadeu - ducAmount).toLocaleString()} VND</p>
+                    </div>`;
+            } else if (mayAmount > chiadeu && ducAmount === 0 && phiAmount > 0 && phiAmount < chiadeu) {
+                resultHTML += `
+                    <div class="alert alert-success">
+                        <h4>Kết Quả:</h4>
+                        <p>Em Phi gửi chị Mây: ${(chiadeu - phiAmount).toLocaleString()} VND</p>
+                        <p>Anh Đức gửi chị Mây: ${chiadeu.toLocaleString()} VND</p>
+                    </div>`;
+            } else if (mayAmount > chiadeu && ducAmount > 0 && ducAmount < chiadeu && phiAmount > 0 && phiAmount < chiadeu) {
+                resultHTML += `
+                    <div class="alert alert-success">
+                        <h4>Kết Quả:</h4>
+                        <p>Em Phi gửi chị Mây: ${(chiadeu - phiAmount).toLocaleString()} VND</p>
+                        <p>Anh Đức gửi chị Mây: ${(chiadeu - ducAmount).toLocaleString()} VND</p>
+                    </div>`;
+            }
+            // em Phi & anh Duc & chi Mây
+            else if (phiAmount > chiadeu && ducAmount > chiadeu && mayAmount >= 0) {
+                resultHTML += `
+                    <div class="alert alert-success">
+                        <h4>Kết Quả:</h4>
+                        <p>Chị Mây gửi em Phi: ${Math.abs(chiadeu - phiAmount).toLocaleString()} VND</p>
+                        <p>Chị Mây gửi anh Đức: ${Math.abs(chiadeu - ducAmount).toLocaleString()} VND</p>
+                    </div>`;
+            } else if (phiAmount > chiadeu && mayAmount > chiadeu && ducAmount >= 0) {
+                resultHTML += `
+                    <div class="alert alert-success">
+                        <h4>Kết Quả:</h4>
+                        <p>Anh Đức gửi em Phi: ${Math.abs(chiadeu - phiAmount).toLocaleString()} VND</p>
+                        <p>Anh Đức gửi chị Mây: ${Math.abs(chiadeu - mayAmount).toLocaleString()} VND</p>
+                    </div>`;
+            } else if (mayAmount > chiadeu && ducAmount > chiadeu && phiAmount >= 0) {
+                resultHTML += `
+                    <div class="alert alert-success">
+                        <h4>Kết Quả:</h4>
+                        <p>Em Phi gửi chị Mây: ${Math.abs(chiadeu - mayAmount).toLocaleString()} VND</p>
+                        <p>Em Phi gửi anh Đức: ${Math.abs(chiadeu - ducAmount).toLocaleString()} VND</p>
+                    </div>`;
+                }
+            //TH Khac
+            else if (mayAmount === chiadeu && ducAmount === chiadeu && phiAmount === chiadeu) {
+                resultHTML += `
+                    <div class="alert alert-success">
+                        <h4>Kết Quả:</h4>
+                        <p>Tất cả mọi người đã chi tiêu bằng nhau!</p>
+                    </div>`;
+            } else {
+                resultHTML += `
+                    <div class="alert alert-warning">
+                        <h4>Kết Quả:</h4>
+                        <p>Không có tình huống phù hợp, vui lòng kiểm tra lại dữ liệu!</p>
+                    </div>`;
+            }
+
+            resultDiv.innerHTML = resultHTML;
+        }
+    </script>
+</body>
+
+</html>
