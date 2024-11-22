@@ -1,0 +1,45 @@
+/* Toàn bộ trang web */
+body {
+    background-image: url('resources/background.png');
+    /* Đường dẫn đến hình nền */
+    background-size: cover;
+    /* Hình nền phủ toàn bộ trang */
+    background-repeat: no-repeat;
+    /* Không lặp lại hình nền */
+    background-attachment: fixed;
+    /* Giữ hình nền cố định khi cuộn */
+    background-position: center;
+    /* Căn giữa hình nền */
+    font-family: Arial, sans-serif;
+    /* Đặt font chữ */
+}
+
+/* Hộp form */
+.container {
+    background: rgba(255, 255, 255, 0.9);
+    /* Hộp form có nền trắng mờ */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Thêm hiệu ứng bóng */
+}
+
+/* Tiêu đề */
+h1 {
+    color: #333;
+    /* Đặt màu chữ */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    /* Thêm bóng chữ */
+}
+
+/* Các nhãn (labels) */
+.form-label {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Kết quả */
+.alert {
+    font-size: 16px;
+    font-weight: 500;
+}
