@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top" id="styleNavbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="thuemini.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                <b>PHẦN MỀM TÍNH TIỀN GIẤC MƠ</b>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav me-auto">
+                    <!-- Thêm nút Tính ba người ở đây -->
+                    <a class="nav-link active" href="index.html">
+                        <button type="button" class="btn btn-outline-primary">Tính ba</button>
+                    </a>
+                    <!--
+                    <a class="nav-link active" aria-current="page" data-href="acreateRequests.php"
+                        href="acreateRequests.php">Thủ tục hành chính nội bộ</a>
+                    <a class="nav-link active" data-href="botherFeatures.php" href="botherFeatures.php">Chức năng khác</a>
+                    <a class="nav-link active" data-href="cshowLibrary.php" href="cshowLibrary.php">
+                        Thư viện
+                        
+                    </a>
+    
+                    <a class="nav-link" aria-current="page" target="_blank"
+                        href="https://docs.google.com/spreadsheets/d/1d4ism7QxgZMMeMpiXTiv04W2ZVDxjrXP3fp0LjakO8c/edit?usp=sharing">Góp
+                        ý/ Phản hồi</a>
+    
+                    <a class="nav-link disabled" aria-disabled="true">#</a>
+    
+                    <br>
+                -->
+                </div>
+    
+                <div>
+                    <div
+                        style="float: right; margin-top: 5px; margin-right: 5px;">
+                        Phiên bản: 2.0 21042025
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="gm_favicon.ico">
+    <title>Phần Mềm Tính Tiền Giấc Mơ</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+
+        <form id="expenseForm">
+            <!-- Tổng số tiền -->
+            <div class="row mb-3">
+                <label for="totalAmount" class="col-md-4 form-label"><b>Tổng số tiền đã chi:</b></label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control" id="totalAmount" required>
+                </div>
+            </div>
+            <!-- Số tiền chị Mây -->
+            <div class="row mb-3">
+                <label for="mayAmount" class="col-md-4 form-label">Tiền chị Mây:</label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control" id="mayAmount" required>
+                </div>
+            </div>
+            <!-- Số tiền anh Đức -->
+            <div class="row mb-3">
+                <label for="ducAmount" class="col-md-4 form-label">Tiền anh Đức:</label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control" id="ducAmount" required>
+                </div>
+            </div>
+            <!-- Số tiền em Phi -->
+            <div class="row mb-3">
+                <label for="phiAmount" class="col-md-4 form-label">Tiền em Phi:</label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control" id="phiAmount" required>
+                </div>
+            </div>
+            <!-- Số tiền em Hải -->
+            <div class="row mb-3">
+                <label for="haiAmount" class="col-md-4 form-label">Tiền em Hải:</label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control" id="haiAmount" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 offset-md-4">
+                    <button type="button" class="btn btn-primary w-100" onclick="calculate()">Tính Toán</button>
+                </div>
+            </div>
+        </form>
+    
+        <div id="result" class="result-section mt-4"></div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function calculate() {
+            const totalAmount = parseFloat(document.getElementById("totalAmount").value);
+            const mayAmount = parseFloat(document.getElementById("mayAmount").value);
+            const ducAmount = parseFloat(document.getElementById("ducAmount").value);
+            const phiAmount = parseFloat(document.getElementById("phiAmount").value);
+            const haiAmount = parseFloat(document.getElementById("haiAmount").value);
+            const resultDiv = document.getElementById("result");
+
+            if (isNaN(totalAmount) || isNaN(mayAmount) || isNaN(ducAmount) || isNaN(phiAmount) || isNaN(haiAmount)) {
+                resultDiv.innerHTML = `<div class="alert alert-danger">Vui lòng nhập đầy đủ các giá trị hợp lệ!</div>`;
+                return;
+            }
+
+            const chiadeu = totalAmount / 4;
+            const doubleCheck = mayAmount + ducAmount + phiAmount + haiAmount;
+
+            let resultHTML = `
+                    <div class="alert alert-info">
+                        <h4>Thông Tin:</h4>
+                        <p><strong>Tổng số tiền đã chi:</strong> ${totalAmount.toLocaleString()} VND</p>
+                        <p><strong>Tổng số tiền đã chi (Double-Check):</strong> ${doubleCheck.toLocaleString()} VND</p>
+                        <p><strong>Mỗi người cần chi tiêu:</strong> ${chiadeu.toLocaleString()} VND</p>
+                        <p><strong>Chị Mây chi:</strong> ${mayAmount.toLocaleString()} VND</p>
+                        <p><strong>Anh Đức chi:</strong> ${ducAmount.toLocaleString()} VND</p>
+                        <p><strong>Em Phi chi:</strong> ${phiAmount.toLocaleString()} VND</p>
+                        <p><strong>Em Hải chi:</strong> ${haiAmount.toLocaleString()} VND</p>
+                    </div>`;
+
+            if (mayAmount > totalAmount || ducAmount > totalAmount || phiAmount > totalAmount || haiAmount > totalAmount ||
+                mayAmount < 0 || ducAmount < 0 || phiAmount < 0 || haiAmount < 0) {
+                resultHTML += `
+                        <div class="alert alert-danger">
+                            <h4>Lỗi:</h4>
+                            <p>Đã xảy ra lỗi, vui lòng kiểm tra lại dữ liệu.</p>
+                        </div>`;
+            } else if (doubleCheck !== totalAmount) {
+                resultHTML += `
+                        <div class="alert alert-danger">
+                            <h4>Lỗi:</h4>
+                            <p>Tổng số tiền kiểm tra không khớp với tổng số tiền đã chi. Vui lòng kiểm tra lại!</p>
+                        </div>`;
+            } else {
+                // Tính toán số tiền dư/thiếu của mỗi người
+                const mayDiff = mayAmount - chiadeu; // Dương là dư, âm là thiếu
+                const ducDiff = ducAmount - chiadeu;
+                const phiDiff = phiAmount - chiadeu;
+                const haiDiff = haiAmount - chiadeu;
+                
+                // Tạo mảng những người cần nhận tiền (đã chi nhiều hơn phần của họ)
+                const creditors = [];
+                if (mayDiff > 0) creditors.push({name: "Chị Mây", amount: mayDiff});
+                if (ducDiff > 0) creditors.push({name: "Anh Đức", amount: ducDiff});
+                if (phiDiff > 0) creditors.push({name: "Em Phi", amount: phiDiff});
+                if (haiDiff > 0) creditors.push({name: "Em Hải", amount: haiDiff});
+                
+                // Tạo mảng những người cần trả tiền (đã chi ít hơn phần của họ)
+                const debtors = [];
+                if (mayDiff < 0) debtors.push({name: "Chị Mây", amount: -mayDiff});
+                if (ducDiff < 0) debtors.push({name: "Anh Đức", amount: -ducDiff});
+                if (phiDiff < 0) debtors.push({name: "Em Phi", amount: -phiDiff});
+                if (haiDiff < 0) debtors.push({name: "Em Hải", amount: -haiDiff});
+                
+                // Trường hợp mọi người đều chi tiêu bằng nhau
+                if (creditors.length === 0 && debtors.length === 0) {
+                    resultHTML += `
+                        <div class="alert alert-success">
+                            <h4>Kết Quả:</h4>
+                            <p>Tất cả mọi người đã chi tiêu bằng nhau!</p>
+                        </div>`;
+                } else {
+                    resultHTML += `
+                        <div class="alert alert-success">
+                            <h4>Kết Quả:</h4>`;
+                    
+                    // Với mỗi người thiếu tiền, tính toán họ phải trả cho ai
+                    for (let debtor of debtors) {
+                        let remainingDebt = debtor.amount;
+                        
+                        for (let creditor of creditors) {
+                            if (remainingDebt > 0 && creditor.amount > 0) {
+                                const transferAmount = Math.min(remainingDebt, creditor.amount);
+                                resultHTML += `<p>${debtor.name} gửi ${creditor.name}: ${transferAmount.toLocaleString()} VND</p>`;
+                                
+                                remainingDebt -= transferAmount;
+                                creditor.amount -= transferAmount;
+                            }
+                        }
+                    }
+                    
+                    resultHTML += `</div>`;
+                }
+            }
+
+            resultDiv.innerHTML = resultHTML;
+        }
+    </script>
+</body>
+
+</html>
