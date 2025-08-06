@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top" id="styleNavbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="thuemini.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                <b>PHẦN MỀM TÍNH TIỀN GIẤC MƠ - BOIZZ</b>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav me-auto">
+                    <a class="nav-link active" href="index.html">
+                        <button type="button" class="btn btn-outline-primary">Trang chủ</button>
+                    </a>
+                </div>
+                <div>
+                    <div style="float: right; margin-top: 5px; margin-right: 5px;">
+                        Phiên bản: 1.0 22112024
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="gm_favicon.ico">
+    <title>Phần Mềm Tính Tiền Giấc Mơ dành cho Boizz</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+
+        <form id="expenseForm">
+            <!-- Tổng số tiền -->
+            <div class="row mb-3">
+                <label for="totalAmount" class="col-md-4 form-label"><b>Tổng số tiền đã chi:</b></label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control money-input" id="totalAmount" required>
+                </div>
+            </div>
+            <!-- Số tiền Em Hải -->
+            <div class="row mb-3">
+                <label for="haiAmount" class="col-md-4 form-label">Tiền Em Hải:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control money-input" id="haiAmount" required>
+                </div>
+            </div>
+            <!-- Số tiền Anh Đức -->
+            <div class="row mb-3">
+                <label for="ducAmount" class="col-md-4 form-label">Tiền Anh Đức:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control money-input" id="ducAmount" required>
+                </div>
+            </div>
+            <!-- Số tiền Em Phi -->
+            <div class="row mb-3">
+                <label for="phiAmount" class="col-md-4 form-label">Tiền Em Phi:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control money-input" id="phiAmount" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 offset-md-4">
+                    <button type="button" class="btn btn-primary w-100" onclick="calculate()">Tính Toán</button>
+                </div>
+            </div>
+        </form>
+    
+        <div id="result" class="result-section mt-4"></div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function formatMoney(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value !== '') {
+                value = parseInt(value, 10).toLocaleString('vi-VN');
+            }
+            input.value = value;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const moneyInputs = document.querySelectorAll('.money-input');
+            moneyInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    formatMoney(this);
+                });
+                input.addEventListener('focus', function() {
+                    this.value = this.value.replace(/\./g, '');
+                });
+                input.addEventListener('blur', function() {
+                    formatMoney(this);
+                });
+            });
+        });
+
+        function calculate() {
+            const totalAmount = parseFloat(document.getElementById("totalAmount").value.replace(/\./g, ''));
+            const haiAmount = parseFloat(document.getElementById("haiAmount").value.replace(/\./g, ''));
+            const ducAmount = parseFloat(document.getElementById("ducAmount").value.replace(/\./g, ''));
+            const phiAmount = parseFloat(document.getElementById("phiAmount").value.replace(/\./g, ''));
+            const resultDiv = document.getElementById("result");
+
+            if (isNaN(totalAmount) || isNaN(haiAmount) || isNaN(ducAmount) || isNaN(phiAmount)) {
+                resultDiv.innerHTML = `<div class="alert alert-danger">Vui lòng nhập đầy đủ các giá trị hợp lệ!</div>`;
+                return;
+            }
+
+            const chiadeu = totalAmount / 3;
+            const doubleCheck = haiAmount + ducAmount + phiAmount;
+
+            let resultHTML = `
+                <div class="alert alert-info">
+                    <h4>Thông Tin:</h4>
+                    <p><strong>Tổng số tiền đã chi:</strong> ${totalAmount.toLocaleString()} VND</p>
+                    <p><strong>Tổng số tiền đã chi (Double-Check):</strong> ${doubleCheck.toLocaleString()} VND</p>
+                    <p><strong>Mỗi người cần chi tiêu:</strong> ${chiadeu.toLocaleString()} VND</p>
+                    <p><strong>Em Hải chi:</strong> ${haiAmount.toLocaleString()} VND</p>
+                    <p><strong>Anh Đức chi:</strong> ${ducAmount.toLocaleString()} VND</p>
+                    <p><strong>Em Phi chi:</strong> ${phiAmount.toLocaleString()} VND</p>
+                </div>`;
+
+            if (haiAmount > totalAmount || ducAmount > totalAmount || phiAmount > totalAmount ||
+                haiAmount < 0 || ducAmount < 0 || phiAmount < 0) {
+                resultHTML += `<div class="alert alert-danger"><h4>Lỗi:</h4><p>Dữ liệu không hợp lệ.</p></div>`;
+            } else if (doubleCheck !== totalAmount) {
+                resultHTML += `<div class="alert alert-danger"><h4>Lỗi:</h4><p>Tổng kiểm tra không khớp!</p></div>`;
+            }
+            // Em Phi
+            else if (phiAmount > chiadeu && ducAmount > 0 && ducAmount < chiadeu && haiAmount === 0) {
+                resultHTML += `<div class="alert alert-success"><h4>Kết Quả:</h4><p>Em Hải gửi Em Phi: ${chiadeu.toLocaleString()} VND</p><p>Anh Đức gửi Em Phi: ${(chiadeu - ducAmount).toLocaleString()} VND</p></div>`;
+            } else if (phiAmount > chiadeu && ducAmount === 0 && haiAmount < chiadeu && haiAmount > 0) {
+                resultHTML += `<div class="alert alert-success"><h4>Kết Quả:</h4><p>Em Hải gửi Em Phi: ${(chiadeu - haiAmount).toLocaleString()} VND</p><p>Anh Đức gửi Em Phi: ${chiadeu.toLocaleString()} VND</p></div>`;
+            } else if (phiAmount > chiadeu && ducAmount > 0 && ducAmount < chiadeu && haiAmount < chiadeu && haiAmount > 0) {
+                resultHTML += `<div class="alert alert-success"><h4>Kết Quả:</h4><p>Em Hải gửi Em Phi: ${(chiadeu - haiAmount).toLocaleString()} VND</p><p>Anh Đức gửi Em Phi: ${(chiadeu - ducAmount).toLocaleString()} VND</p></div>`;
+            // Anh Đức
+            } else if (ducAmount > chiadeu && phiAmount > 0 && phiAmount < chiadeu && haiAmount === 0) {
+                resultHTML += `<div class="alert alert-success"><h4>Kết Quả:</h4><p>Em Hải gửi Anh Đức: ${chiadeu.toLocaleString()} VND</p><p>Em Phi gửi Anh Đức: ${(chiadeu - phiAmount).toLocaleString()} VND</p></div>`;
+            } else if (ducAmount > chiadeu && phiAmount === 0 && haiAmount > 0 && haiAmount < chiadeu) {
+                resultHTML += `<div class="alert alert-success"><h4>Kết Quả:</h4><p>Em Hải gửi Anh Đức: ${(chiadeu - haiAmount).toLocaleString()} VND</p><p>Em Phi gửi Anh Đức: ${chiadeu.toLocaleString()} VND</p></div>`;
+            } else if (ducAmount > chiadeu && phiAmount > 0 && phiAmount < chiadeu && haiAmount > 0 && haiAmount < chiadeu) {
+                resultHTML += `<div class="alert alert-success"><h4>Kết Quả:</h4><p>Em Hải gửi Anh Đức: ${(chiadeu - haiAmount).toLocaleString()} VND</p><p>Em Phi gửi Anh Đức: ${(chiadeu - phiAmount).toLocaleString()} VND</p></div>`;
+            // Em Hải
+            } else if (haiAmount > chiadeu && ducAmount > 0 && ducAmount < chiadeu && phiAmount === 0) {
+                resultHTML += `<div class="alert alert-success"><h4>Kết Quả:</h4><p>Em Phi gửi Em Hải: ${chiadeu.toLocaleString()} VND</p><p>Anh Đức gửi Em Hải: ${(chiadeu - ducAmount).toLocaleString()} VND</p></div>`;
+            } else if (haiAmount > chiadeu && ducAmount === 0 && phiAmount > 0 && phiAmount < chiadeu) {
+                resultHTML += `<div class="alert alert-success"><h4>Kết Quả:</h4><p>Em Phi gửi Em Hải: ${(chiadeu - phiAmount).toLocaleString()} VND</p><p>Anh Đức gửi Em Hải: ${chiadeu.toLocaleString()} VND</p></div>`;
+            } else if (haiAmount > chiadeu && ducAmount > 0 && ducAmount < chiadeu && phiAmount > 0 && phiAmount < chiadeu) {
+                resultHTML += `<div class="alert alert-success"><h4>Kết Quả:</h4><p>Em Phi gửi Em Hải: ${(chiadeu - phiAmount).toLocaleString()} VND</p><p>Anh Đức gửi Em Hải: ${(chiadeu - ducAmount).toLocaleString()} VND</p></div>`;
+            }
+            // Trường hợp nhiều người dư
+            else if (phiAmount > chiadeu && ducAmount > chiadeu) {
+                resultHTML += `<div class="alert alert-success"><h4>Kết Quả:</h4><p>Em Hải gửi Em Phi: ${Math.abs(chiadeu - phiAmount).toLocaleString()} VND</p><p>Em Hải gửi Anh Đức: ${Math.abs(chiadeu - ducAmount).toLocaleString()} VND</p></div>`;
+            } else if (phiAmount > chiadeu && haiAmount > chiadeu) {
+                resultHTML += `<div class="alert alert-success"><h4>Kết Quả:</h4><p>Anh Đức gửi Em Phi: ${Math.abs(chiadeu - phiAmount).toLocaleString()} VND</p><p>Anh Đức gửi Em Hải: ${Math.abs(chiadeu - haiAmount).toLocaleString()} VND</p></div>`;
+            } else if (haiAmount > chiadeu && ducAmount > chiadeu) {
+                resultHTML += `<div class="alert alert-success"><h4>Kết Quả:</h4><p>Em Phi gửi Em Hải: ${Math.abs(chiadeu - haiAmount).toLocaleString()} VND</p><p>Em Phi gửi Anh Đức: ${Math.abs(chiadeu - ducAmount).toLocaleString()} VND</p></div>`;
+            }
+            // Bằng nhau
+            else if (haiAmount === chiadeu && ducAmount === chiadeu && phiAmount === chiadeu) {
+                resultHTML += `<div class="alert alert-success"><h4>Kết Quả:</h4><p>Tất cả mọi người đã chi tiêu bằng nhau!</p></div>`;
+            } else {
+                resultHTML += `<div class="alert alert-warning"><h4>Kết Quả:</h4><p>Không có tình huống phù hợp!</p></div>`;
+            }
+
+            resultDiv.innerHTML = resultHTML;
+        }
+    </script>
+</body>
+</html>
